@@ -1,0 +1,169 @@
+<!-- Search Bar -->
+<div class="container">
+  <form [formGroup]="searchForm" (ngSubmit)="search()">
+    <div class="row mt-5 mb-5">
+      <div class="col-1">
+        <span class="align-middle">From</span>
+      </div>
+      <div class="col-4">
+        <select class="form-select" formControlName="from">
+          <option
+            *ngFor="let countries of store.getCountriesCodes$() | async"
+            [ngValue]="countries.code"
+          >
+            {{ countries.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-1">
+        <span class="align-middle">To</span>
+      </div>
+      <div class="col-4">
+        <select class="form-select" formControlName="to">
+          <option
+            *ngFor="let countries of store.getCountriesCodes$() | async"
+            [ngValue]="countries.code"
+          >
+            {{ countries.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-2">
+        <button class="btn btn-primary text-center" type="submit">
+          Search
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Search Result Set -->
+<div class="container">
+  <div class="row text-center mb-5">
+    <div class="col-lg-7 mx-auto">
+      <h3 class="display-8">Sailing Schedules</h3>
+    </div>
+  </div>
+  <div class="text-center" *ngIf="loading">
+    <div class="spinner-border" role="status"></div>
+  </div>
+  <div class="row" *ngIf="error; then errorMessage; else dataAvailable"></div>
+</div>
+
+<ng-template #dataAvailable>
+  <div class="row-lg-12 mx-auto mb-2" *ngFor="let schedule of schedules">
+    <!-- List group-->
+    <ul class="list-group shadow">
+      <!-- list group item-->
+      <li class="list-group-item">
+        <!-- Custom content-->
+        <div class="align-items-lg-center flex-column flex-lg-row p-3">
+          <div class="order-2 order-lg-1">
+            <div class="row">
+              <div class="col-3">
+                <h2 class="mt-0 font-weight-bold mb-2">
+                  {{ schedule.vessel.name }}
+                </h2>
+                <h2 class="mt-0 font-weight-bold mb-2">
+                  {{ schedule.voyageNumber }}
+                </h2>
+                <h2 class="mt-0 font-weight-bold mb-2">
+                  {{ schedule.productType }}
+                </h2>
+              </div>
+              <div class="col-9">
+                <div class="row">
+                  <div class="col-4 fs-5">Departure</div>
+                  <div class="col-4">
+                    <div class="row fs-5">Duration</div>
+                    <div class="row">
+                      <p class="text-muted small">(For Dangerous goods)</p>
+                    </div>
+                  </div>
+                  <div class="col-4 fs-5">Arrival</div>
+                </div>
+                <div class="row">
+                  <div class="col-4 fs-6 fst-italic text-info font-weight-bold">
+                    {{ schedule.etd | date }}
+                  </div>
+                  <div class="col-4">
+                    <div class="row fs-6 fst-italic text-info font-weight-bold">
+                      {{ schedule.transitTimePortToPort }}
+                    </div>
+                    <div class="row text-muted small">
+                      ({{ schedule.transitTimeCutOffToPort }})
+                    </div>
+                  </div>
+                  <div class="col-4 fs-6 fst-italic text-info font-weight-bold">
+                    {{ schedule.eta | date }}
+                  </div>
+                </div>
+
+                <div class="mb-4 mt-4 border-bottom"></div>
+
+                <div class="row">
+                  <div class="row">
+                    <div class="col-4 fs-5">Port of Discharge</div>
+                    <div class="col-4 fs-5">Port of Loading</div>
+                    <div class="col-4 fs-5">Expected Arrival at Warehouse</div>
+                  </div>
+                  <div class="row">
+                    <div
+                      class="col-4 fs-6 fst-italic text-info font-weight-bold"
+                    >
+                      {{ schedule.portOfDischarge.name }}
+                    </div>
+                    <div
+                      class="col-4 fs-6 fst-italic text-info font-weight-bold"
+                    >
+                      {{ schedule.portOfLoading.name }}
+                    </div>
+                    <div
+                      class="col-4 fs-6 fst-italic text-info font-weight-bold"
+                    >
+                      {{ schedule.cutOff | date }}
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="row">
+                    <div class="col-4 fs-5">Hub location</div>
+                    <div class="col-4 fs-5">Place of Receipt</div>
+                    <div class="col-4 fs-5">In case of dangerous goods</div>
+                  </div>
+                  <div class="row">
+                    <div
+                      class="col-4 fs-6 fst-italic text-info font-weight-bold"
+                    >
+                      {{ schedule.hub.name }}
+                    </div>
+                    <div
+                      class="col-4 fs-6 fst-italic text-info font-weight-bold"
+                    >
+                      {{ schedule.placeOfReceipt.name }}
+                    </div>
+                    <div
+                      class="col-4 fs-6 fst-italic text-info font-weight-bold"
+                    >
+                      {{ schedule.cutOffIMO | date }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End -->
+      </li>
+      <!-- End -->
+    </ul>
+    <!-- End -->
+  </div>
+</ng-template>
+<ng-template #errorMessage>
+  <div class="text-center">
+    Error : Schedules cannot be found. Search with a different criteria.
+  </div>
+</ng-template>
