@@ -2,6 +2,16 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.1.
 
+This project is deployed on : https://sailingschedule.netlify.app/scheduleSearch
+Note : to search use below filter -
+Source : Belgium, Destination : Singapore
+
+Below features are used in this project :
+1. Lazy loaded module using parent and child routes.
+2. Custom store using Behaviour Subject to store city details thereby reducing multiple API calls
+3. HTML and CSS to design result set in tabular format.
+
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
