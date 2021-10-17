@@ -3,6 +3,7 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.1.
 
 This project is deployed on : https://sailingschedule.netlify.app/scheduleSearch
+
 Note : to search use below filter -
 Source : Belgium, Destination : Singapore
 
